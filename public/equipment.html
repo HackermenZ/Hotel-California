@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipment Management</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+   
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+h1 {
+    color: #007bff;
+    text-align: center;
+}
+
+.btn-primary,
+.btn-success {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+}
+
+/* Optional: Style form elements within modals */
+
+.modal-body label {
+    font-weight: bold;
+}
+
+.modal-body .form-group {
+    margin-bottom: 20px;
+}
+
+/* Optional: Style details modal */
+
+#viewDetailsModalLabel {
+    color: #007bff;
+}
+
+.list-group-item {
+    font-weight: bold;
+}
+
+/* Optional: Style responsive tables */
+
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+}
+
+</style>
+<body>
+  <div class="container">
+    <h1 class="my-4">Equipment Management</h1>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#searchModal">Search Equipment</button>
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addEquipmentModal">Add New Equipment</button>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Equipment ID</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Availability</th>
+          <th>Customer ID</th>
+          <th>Renting Time</th>
+          <th>Returning Time</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="equipmentTableBody">
+        <!-- Equipment data will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="searchModalLabel">Search Equipment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="searchAttribute">Search By</label>
+            <select class="form-control" id="searchAttribute">
+              <option value="description">Description</option>
+              <option value="price">Price</option>
+              <option value="availability">Availability</option>
+              <!-- Add more options for other attributes -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="searchValue">Search Value</label>
+            <input type="text" class="form-control" id="searchValue" placeholder="Enter search value">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="searchButton">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Equipment Modal -->
+  <div class="modal fade" id="addEquipmentModal" tabindex="-1" role="dialog" aria-labelledby="addEquipmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEquipmentModalLabel">Add New Equipment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addEquipmentForm">
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input type="text" class="form-control" id="description" required>
+            </div>
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input type="number" class="form-control" id="price" required>
+            </div>
+            <div class="form-group">
+              <label for="availability">Availability</label>
+              <select class="form-control" id="availability" required>
+                <option value="YES">Available</option>
+                <option value="NO">Not Available</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="addEquipmentButton">Add Equipment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Details Modal -->
+  <div class="modal fade" id="viewDetailsModal" tabindex="-1" role="dialog" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewDetailsModalLabel">Equipment Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li class="list-group-item">Equipment ID: <span id="detailEquipmentID"></span></li>
+            <li class="list-group-item">Description: <span id="detailDescription"></span></li>
+            <li class="list-group-item">Price: <span id="detailPrice"></span></li>
+            <li class="list-group-item">Availability: <span id="detailAvailability"></span></li>
+            <li class="list-group-item">Customer ID: <span id="detailCustomerID"></span></li>
+            <li class="list-group-item">Renting Time: <span id="detailRentingTime"></span></li>
+            <li class="list-group-item">Returning Time: <span id="detailReturningTime"></span></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Load equipment data on page load
+      loadEquipmentData();
+
+      // Search equipment
+      $('#searchButton').click(function() {
+        const searchAttribute = $('#searchAttribute').val();
+        const searchValue = $('#searchValue').val();
+        searchEquipment(searchAttribute, searchValue);
+        $('#searchModal').modal('hide');
+      });
+
+      // Add new equipment
+      $('#addEquipmentButton').click(function() {
+        const description = $('#description').val();
+        const price = $('#price').val();
+        const availability = $('#availability').val();
+        addNewEquipment(description, price, availability);
+        $('#addEquipmentModal').modal('hide');
+      });
+
+      // View equipment details
+      $(document).on('click', '.viewDetailsButton', function() {
+        const equipmentID = $(this).data('equipment-id');
+        viewEquipmentDetails(equipmentID);
+      });
+    });
+
+    function loadEquipmentData() {
+      $.ajax({
+        url: '/api/equipment',
+        method: 'GET',
+        success: function(data) {
+          const equipmentTableBody = $('#equipmentTableBody');
+          equipmentTableBody.empty();
+          data.forEach(function(equipment) {
+            const row = `
+              <tr>
+                <td>${equipment.equipmentID}</td>
+                <td>${equipment.description}</td>
+                <td>${equipment.price}</td>
+                <td>${equipment.availability}</td>
+                <td>${equipment.customerID}</td>
+                <td>${equipment.rentingTime}</td>
+                <td>${equipment.returningTime}</td>
+                <td><button class="btn btn-primary viewDetailsButton" data-equipment-id="${equipment.equipmentID}">View Details</button></td>
+              </tr>
+            `;
+            equipmentTableBody.append(row);
+          });
+        },
+        error: function(error) {
+          console.error('Error:', error);
+        }
+      });
+    }
+
+    function searchEquipment(searchAttribute, searchValue) {
+      $.ajax({
+        url: `/api/search/equipment?searchAttribute=${searchAttribute}&searchValue=${searchValue}`,
+        method: 'GET',
+        success: function(data) {
+          const equipmentTableBody = $('#equipmentTableBody');
+          equipmentTableBody.empty();
+          data.forEach(function(equipment) {
+            const row = `
+              <tr>
+                <td>${equipment.equipmentID}</td>
+                <td>${equipment.description}</td>
+                <td>${equipment.price}</td>
+                <td>${equipment.availability}</td>
+                <td>${equipment.customerID}</td>
+                <td>${equipment.rentingTime}</td>
+                <td>${equipment.returningTime}</td>
+                <td><button class="btn btn-primary viewDetailsButton" data-equipment-id="${equipment.equipmentID}">View Details</button></td>
+              </tr>
+            `;
+            equipmentTableBody.append(row);
+          });
+        },
+        error: function(error) {
+          console.error('Error:', error);
+        }
+      });
+    }
+
+    function addNewEquipment(description, price, availability) {
+      $.ajax({
+        url: '/api/equipment/post',
+        method: 'POST',
+        data: { description, price, availability },
+        success: function(data) {
+          console.log('Success:', data);
+          console.log(data.message);
+          loadEquipmentData();
+        },
+        error: function(error) {
+          console.error('Error:', error);
+        }
+      });
+    }
+
+    function viewEquipmentDetails(equipmentID) {
+      $.ajax({
+        url: `/api/equipment/${equipmentID}`,
+        method: 'GET',
+        success: function(data) {
+          const equipment = data[0];
+          $('#detailEquipmentID').text(equipment.equipmentID);
+          $('#detailDescription').text(equipment.description);
+          $('#detailPrice').text(equipment.price);
+          $('#detailAvailability').text(equipment.availability);
+          $('#detailCustomerID').text(equipment.customerID);
+          $('#detailRentingTime').text(equipment.rentingTime);
+          $('#detailReturningTime').text(equipment.returningTime);
+          $('#viewDetailsModal').modal('show');
+        },
+        error: function(error) {
+          console.error('Error:', error);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

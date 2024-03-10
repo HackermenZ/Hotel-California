@@ -1,0 +1,385 @@
+body {
+    /* background-image: url(Images/02.jpg); */
+    background-image: url(iamge/backiee-258614.jpg);
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    color: white;
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #333; */
+    background-color: #141d28;   
+    color: white;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+table{
+  color: black;
+}
+
+.logo {
+    width: 100px;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+}
+
+nav {
+    flex: 1;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+.book {
+    background-color: #ff6600;
+    padding: 10px 20px;
+}
+
+.book a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.banner {
+    height: 500px;
+    background-image: url("banner.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.banner h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.banner p {
+    font-size: 20px;
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px;
+}
+
+.feature {
+    width: 300px;
+}
+
+.feature img {
+    width: 100%;
+    height: auto;
+}
+
+.feature h3 {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.feature p {
+    text-align: justify;
+}
+
+.testimonials {
+    background-color: #f0f0f0;
+    padding: 40px;
+}
+
+.testimonials h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.testimonial {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.testimonial img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.testimonial p {
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.testimonial span {
+    font-weight: bold;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+}
+
+.social {
+    display: flex;
+}
+
+.social a {
+    margin: 0 10px;
+}
+
+.social img {
+    width: 30px;
+    height: 30px;
+}
+
+.copy {
+    font-size: 14px;
+}
+
+
+/* Style the button */
+.collapsible {
+    background-color: #bbb;
+    color: black;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-bottom: 1px solid white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style the content */
+  .content {
+    display: none;
+    padding: 10px;
+    border: 5px bold black;
+  }
+  
+
+/* !!!!!!!!!!!!!!!!!!!! */
+
+table {
+    border: 1px solid #333;
+    border-collapse: collapse;
+    background-color: bisque;
+  }
+  
+  caption {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #333;
+    color: white;
+  }
+  
+  td {
+    border: 1px solid #333;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f0f0f0;
+  }
+  
+  tr:hover {
+    background-color: #ff6600;
+    color: white;
+  }
+
+  /* for map div */
+  .container {
+    display: flex; /* Use flexbox */
+}
+.box {
+    width: 70%; /* Each box takes up 50% of the container's width */
+    background-color: #333;
+    border: 0px solid black;
+    opacity: 0.9;
+    padding: 20px;
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+.box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0); /* Transparent background */
+    pointer-events: none; /* Allow clicks to pass through the pseudo-element */
+}
+
+.box iframe{
+    opacity: 1;
+}
+
+
+/* carosol */
+.carousel {
+    position: relative;
+    width: 80%;
+    margin: auto;
+}
+
+.carousel-slide {
+    display: flex;
+    overflow: hidden;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: auto;
+}
+
+#prevBtn, #nextBtn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#prevBtn {
+    left: 0;
+}
+
+#nextBtn {
+    right: 0;
+}
+
+
+
+/* carosl 2 */
+* {box-sizing:border-box}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+  border: 3px solid black;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}

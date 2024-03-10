@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Hotel California</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background: linear-gradient(to bottom right, #F0F8FF, #ADD8E6);
+            text-align: center;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #006400;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4682B4;
+            color: white;
+        }
+
+        img {
+            width: 300px;
+            height: 175px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <h2>Explore our offerings</h2>
+
+    <div id="roomOptions">
+        <select id="roomDropdown" onchange="fetchRoomData()">
+            <option value="all">Show all rooms</option>
+            <option value="number">Search Room by Number</option>
+            <option value="price">Search Room by Price range</option>
+            <option value="type">Search Room by Room type</option>
+        </select>
+    </div>
+    <div id="roomCart">
+        <h2>Booked Rooms</h2>
+        <ul id="cartList"></ul>
+    </div>
+    <div id="userInfo">
+
+    </div>
+
+    <table id="roomTable">
+        <thead>
+            <tr>
+                <th>Room No</th>
+                <th>Room Type</th>
+                <th>Assigned Employee ID</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Room Image</th>
+                <th>Action</th> <!-- New column for the action button -->
+            </tr>
+        </thead>
+        <tbody id="roomTableBody"></tbody>
+    </table>
+
+    <script src="login2.js">
+        /*
+        
+        // blank.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+
+    // Fetch room data when the page loads
+    fetchRoomData();
+
+    // Add event listener for room dropdown change
+    const roomDropdown = document.getElementById('roomDropdown');
+    roomDropdown.addEventListener('change', fetchRoomData);
+});
+
+async function fetchRoomData() {
+    const roomDropdown = document.getElementById('roomDropdown');
+    const selectedOption = roomDropdown.value;
+
+    try {
+        let endpoint = '/api/rooms';  // Default endpoint to show all rooms
+
+        // Adjust the endpoint based on the selected option
+        switch (selectedOption) {
+            case 'number':
+                const roomNumber = prompt('Enter Room Number:');
+                if (!roomNumber) {
+                    return;  // User canceled the prompt
+                }
+                endpoint = `/api/rooms/${roomNumber}`;
+                break;
+            case 'price':
+                 // Implement the logic to prompt and fetch rooms based on price range
+                 const minpriceNum = prompt('Enter Minimum Price:');
+                 const maxpriceNum = prompt('Enter Maximum Price:');
+                 console.log(minpriceNum, maxpriceNum);
+                 if (!minpriceNum || !maxpriceNum) {
+                     return;  // User canceled the prompt
+                 }
+                 endpoint = `/api/rooms/price/${minpriceNum}/${maxpriceNum}`;
+                 break;
+            case 'type':
+                 // Implement the logic to prompt and fetch rooms based on room type
+                 const roomType = prompt('Enter Room Type:');
+                 
+                 //if (!roomType) {
+                    // return;  // User canceled the prompt
+                 //}
+                 endpoint = `/api/rooms/type/${roomType}`;
+                 break;
+            default:
+                // Default case for 'all' or any unrecognized option
+                break;
+        }
+
+        const response = await fetch(endpoint);
+        const rooms = await response.json();
+        populateRoomTable(rooms);
+    } catch (error) {
+        console.error(error);
+        alert('Error fetching room data');
+    }
+}
+
+function populateRoomTable(rooms) {
+    const tableBody = document.getElementById('roomTableBody');
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    rooms.forEach(room => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = room.roomNo;
+        row.insertCell(1).textContent = room.roomType;
+        row.insertCell(2).textContent = room.employeeID;
+        row.insertCell(3).textContent = room.price;
+        row.insertCell(4).textContent = room.availability;
+
+        // New cell for room image
+        const roomImageCell = row.insertCell(5);
+        const roomImage = document.createElement('img');
+        roomImage.src = `${room.roomImage}`; // Adjust the path based on your setup
+        roomImage.style.width = '150px'; // Adjust the width as needed
+        roomImage.style.height = '75px'; // Adjust the height as needed
+        roomImageCell.appendChild(roomImage);
+          // Existing cells for 'Book' button
+        const bookButtonCell = row.insertCell(6);
+        const bookButton = document.createElement('button');
+        bookButton.textContent = 'Book';
+        bookButton.addEventListener('click', () => { bookRoom(room); });
+        bookButtonCell.appendChild(bookButton);
+    });
+}
+function bookRoom(room) {
+    const cartList = document.getElementById('cartList');
+    const listItem = document.createElement('li');
+    if(room.availability==='NO'){
+        alert('Room not available');
+        return;
+    }
+    const roomImage2=document.createElement('img');
+    roomImage2.src = `${room.roomImage}`; // Adjust the path based on your setup
+    roomImage2.style.width = '150px'; // Adjust the width as needed
+    roomImage2.style.height = '75px'; // Adjust the height as needed
+    listItem.textContent = `Room No: ${room.roomNo}, Type: ${room.roomType}, Price: ${room.price}, Image:`;
+    listItem.appendChild(roomImage2);
+    cartList.appendChild(listItem);
+
+    // Call the server to update the database
+    
+    bookRoomOnServer(room.roomNo);
+}
+async function bookRoomOnServer(roomNo) {
+    try {
+        const response = await fetch(`/api/bookRoom/${roomNo}`, {
+            method: 'GET',
+        });
+
+        if (response.ok) {
+            console.log('Room booked successfully on the server');
+        } else {
+            console.error('Failed to book the room on the server');
+        }
+    } catch (error) {
+        console.error('Error while booking the room:', error);
+    }
+}
+*/
+    </script>
+</body>
+</html>

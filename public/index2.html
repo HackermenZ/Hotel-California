@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel California</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #F0F8FF, #ADD8E6);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-align: center;
+            color: #333;
+        }
+    
+        header {
+            position: relative;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+    
+        h1, h2, h3 {
+            margin: 5px;
+        }
+    
+        h1 {
+            font-size: 2.5em;
+        }
+    
+        h2 {
+            font-size: 1.8em;
+            color: #006400;
+        }
+    
+        h3 {
+            font-size: 1.5em;
+            color: #8B4513;
+        }
+    
+        video {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px 0;
+        }
+    
+        .menu-container {
+            position: relative;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 20px;
+            z-index: 2;
+        }
+    
+        .menu-container a {
+            text-decoration: sienna;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        #username-input {
+            padding: 10px;
+            margin: 10px;
+            border: 2px solid #4682B4;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4682B4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #customerTable {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4682B4;
+            color: white;
+        }
+        #roomTable {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4682B4;
+            color: white;
+        }
+        .slider-container {
+            max-width: 800px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden; /* Ensure images don't overflow the container */
+        }
+
+        .slide img {
+            width: 100%; /* Make images fill the slide container */
+            height: auto; /* Maintain aspect ratio */
+        }
+       
+        
+    </style>
+
+
+    
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- ! -->
+    <style>
+      #heading {
+        padding-top: 20px;
+        font-size: 70px;
+        color: white;
+      }
+
+      .s-eMessage {
+        margin-top: 100px;
+      }
+
+      .customerName,
+      .customerPassword {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        border: 1px;
+        border-radius: 1px;
+        margin-left: 35%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      .customerName {
+        margin-top: 30px;
+      }
+
+      .customerPassword {
+        margin-top: 2px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .tablediv {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+        margin-right: 10px;
+      }
+
+      .roomTable {
+        align-self: center;
+        /* background-color: rgb(212, 9, 77); */
+        /* border: 2px solid black; */
+        margin-left: 20%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      td,
+      th {
+        padding: 15px;
+        /* border: 2px solid black; */
+      }
+
+      .reserveButtonDiv {
+        border: 0px solid black;
+      }
+
+      .s-eButton {
+        padding: 20px;
+        width: 150%;
+        font-size: 24px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+      }
+
+      .s-eContainer {
+        /* background-color: red; */
+        height: 220px;
+        padding: 20%;
+        padding-top: 15%;
+        margin-right: 80px;
+      }
+
+      /* test */
+      /* nav bar previous version color */
+      :root {
+        --color-primary: #0073ff;
+        --color-white: #e9e9e9;
+        --color-black: #141d28;
+        --color-black-1: #212b38;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+
+      .logo {
+        color: var(--color-white);
+        font-size: 30px;
+      }
+
+      .logo span {
+        color: var(--color-primary);
+      }
+
+      .menu-bar {
+        background-color: var(--color-black);
+        height: 80px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        /* justify-content: center; */
+        align-items: center;
+        padding: 0 5%;
+        position: relative;
+      }
+
+      .menu-bar ul {
+        list-style: none;
+        display: flex;
+      }
+
+      .menu-bar ul li {
+        padding: 10px 30px;
+        position: relative;
+      }
+
+      .menu-bar ul li a {
+        font-size: 20px;
+        color: var(--color-white);
+        text-decoration: none;
+
+        transition: all 0.3s;
+      }
+
+      .menu-bar ul li a:hover {
+        color: var(--color-primary);
+      }
+
+      .fas {
+        float: right;
+        margin-left: 10px;
+        padding-top: 3px;
+      }
+
+      /* dropdown menu style */
+      .dropdown-menu {
+        display: none;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background-color: var(--color-black);
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul {
+        display: block;
+        margin: 10px;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul li {
+        width: 150px;
+        padding: 10px;
+      }
+
+      .dropdown-menu-1 {
+        display: none;
+      }
+
+      .dropdown-menu ul li:hover .dropdown-menu-1 {
+        display: block;
+        position: absolute;
+        left: 150px;
+        top: 0;
+        background-color: var(--color-black);
+      }
+    </style>
+    <!-- ! -->
+</head>
+<body>
+    <!-- <header>
+        <h1>Welcome to HOTEL CALIFORNIA</h1>
+        <h2>The best hotel in the world</h2>
+        <h3>We are here to serve you</h3>
+     <div class="menu-container">
+        <a href="home2.html">Home</a>
+        <a href="employee.html">Employee List</a>
+        <a href="room.html">Room List</a>
+        <a href="services.html">Service List</a>
+        <a href="equipment.html">Equipment List</a>
+        <a href="customer.html">Customer</a>
+        <a href="loginCustomer.html">Customer Login</a>
+    </div>
+    </header> -->
+
+    <header>
+        <div class="logo">
+          <img
+            src="iamge/logo.jpg"
+            width="2px"
+            alt="Hotel Logo"
+            style="height: 50; width: 50px"
+          />
+        </div>
+  
+        <!-- !this is the nav bar , here page change can be done -->
+        <nav>
+          <div class="menu-bar">
+            <h1 class="logo">hotel<span>California.</span></h1>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <!-- add html file name in href and change the name according to need -->
+              <li><a href="room.html">Rooms</a></li>
+                <li><a href="employee.html">Employee</a></li>
+              <!-- <li><a href="#">Profile</a></li> -->
+              <li>
+                <a href="#"
+                  >Services & Equipment<i class="fas fa-caret-down"></i
+                ></a>
+                <div class="dropdown-menu">
+                  <ul>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="equipment.html">Equipment</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li><a href="#">Contact us</a></li>
+            </ul>
+          </div>
+        </nav>
+  
+        <!-- <div class="book">
+          <a href="./loginCustomer.html">Book Now</a>
+        </div> -->
+      </header>
+    
+    <h1>Hotel View</h1>
+
+
+    <div id="greeting-text"></div>
+
+    <!--<img src="109104550 (1).png" alt="Hotel Image">-->
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide"><img src="109104550 (1).png" alt="Hotel Image"></div>
+            <div class="slide"><img src="img1.jpg" alt="Image 1"></div>
+            <div class="slide"><img src="img2.jpg" alt="Image 2"></div>
+            <div class="slide"><img src="img3.jpg" alt="Image 3"></div>
+            <!-- Add more slides as needed -->
+        </div>
+    </div>
+
+    <h1>Hotel Customers</h1>
+    <button onclick="fetchData()">Fetch Customer Data</button>
+
+    <table id="customerTable">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Customer ID</th>
+                <th>Customer Mobile</th>
+                <th>Customer Email</th>
+            </tr>
+        </thead>
+        <tbody id="customerTableBody"></tbody>
+    </table>
+    
+    <button onclick="fetchDataRoom()">Fetch Room Data</button>
+
+
+    
+    <h1>Room Booking</h1>
+
+    <div id="roomCart">
+        <h2>Booked Rooms</h2>
+        <ul id="cartList"></ul>
+    </div>
+
+
+    <table id="roomTable">
+        <thead>
+            <tr>
+                <th>Room No</th>
+                <th>Room Type</th>
+                <th>Assigned Employee ID</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Room Image</th>
+                <th>Action</th> <!-- New column for the action button -->
+            </tr>
+        </thead>
+        <tbody id="roomTableBody"></tbody>
+    </table>
+    <br>
+    <button type="button" onclick="submitForm()">Go to Login Page</button>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

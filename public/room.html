@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Management</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+        }
+
+        section {
+            margin: 20px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        form input, form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #4682B4;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4682B4;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .success {
+            background-color: green;
+        }
+        
+        .error {
+            background-color: red;
+        }
+    </style>
+
+    
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- ! -->
+    <style>
+      #heading {
+        padding-top: 20px;
+        font-size: 70px;
+        color: white;
+      }
+
+      .s-eMessage {
+        margin-top: 100px;
+      }
+
+      .customerName,
+      .customerPassword {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        border: 1px;
+        border-radius: 1px;
+        margin-left: 35%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      .customerName {
+        margin-top: 30px;
+      }
+
+      .customerPassword {
+        margin-top: 2px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .tablediv {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+        margin-right: 10px;
+      }
+
+      .roomTable {
+        align-self: center;
+        /* background-color: rgb(212, 9, 77); */
+        /* border: 2px solid black; */
+        margin-left: 20%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      td,
+      th {
+        padding: 15px;
+        /* border: 2px solid black; */
+      }
+
+      .reserveButtonDiv {
+        border: 0px solid black;
+      }
+
+      .s-eButton {
+        padding: 20px;
+        width: 150%;
+        font-size: 24px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+      }
+
+      .s-eContainer {
+        /* background-color: red; */
+        height: 220px;
+        padding: 20%;
+        padding-top: 15%;
+        margin-right: 80px;
+      }
+
+      /* test */
+      /* nav bar previous version color */
+      :root {
+        --color-primary: #0073ff;
+        --color-white: #e9e9e9;
+        --color-black: #141d28;
+        --color-black-1: #212b38;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+
+      .logo {
+        color: var(--color-white);
+        font-size: 30px;
+      }
+
+      .logo span {
+        color: var(--color-primary);
+      }
+
+      .menu-bar {
+        background-color: var(--color-black);
+        height: 80px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        /* justify-content: center; */
+        align-items: center;
+        padding: 0 5%;
+        position: relative;
+      }
+
+      .menu-bar ul {
+        list-style: none;
+        display: flex;
+      }
+
+      .menu-bar ul li {
+        padding: 10px 30px;
+        position: relative;
+      }
+
+      .menu-bar ul li a {
+        font-size: 20px;
+        color: var(--color-white);
+        text-decoration: none;
+
+        transition: all 0.3s;
+      }
+
+      .menu-bar ul li a:hover {
+        color: var(--color-primary);
+      }
+
+      .fas {
+        float: right;
+        margin-left: 10px;
+        padding-top: 3px;
+      }
+
+      /* dropdown menu style */
+      .dropdown-menu {
+        display: none;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background-color: var(--color-black);
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul {
+        display: block;
+        margin: 10px;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul li {
+        width: 150px;
+        padding: 10px;
+      }
+
+      .dropdown-menu-1 {
+        display: none;
+      }
+
+      .dropdown-menu ul li:hover .dropdown-menu-1 {
+        display: block;
+        position: absolute;
+        left: 150px;
+        top: 0;
+        background-color: var(--color-black);
+      }
+    </style>
+    <!-- ! -->
+</head>
+<body>
+    <header>
+        <div class="logo">
+          <img
+            src="iamge/logo.jpg"
+            width="2px"
+            alt="Hotel Logo"
+            style="height: 50; width: 50px"
+          />
+        </div>
+  
+        <!-- !this is the nav bar , here page change can be done -->
+        <nav>
+          <div class="menu-bar">
+            <h1 class="logo">hotel<span>California.</span></h1>
+            <ul>
+              <li><a href="index2.html">Home</a></li>
+              <!-- add html file name in href and change the name according to need -->
+              <li><a href="#">Rooms</a></li>
+              <li><a href="#">Profile</a></li>
+              <li>
+                <a href="#"
+                  >Services & Equipment<i class="fas fa-caret-down"></i
+                ></a>
+                <div class="dropdown-menu">
+                  <ul>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Equipment</a></li>
+                    <li><a href="#">FAQ</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li><a href="#">Contact us</a></li>
+            </ul>
+          </div>
+        </nav>
+  
+        <div class="book">
+          <a href="./loginCustomer.html">Book Now</a>
+        </div>
+      </header>
+    <section style="text-align: center;">
+        <h2>Add Room</h2>
+        <button id="addRoomBtn">Add Room</button>
+    </section>
+
+    <section>
+        <h2 style="text-align: center;">Room List</h2>
+        <table id="roomTable">
+            <thead>
+                <tr>
+                    <th>Room No</th>
+                    <th>Room Type</th>
+                    <th>Assigned Employee ID</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Room Image</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="roomTableBody"></tbody>
+        </table>
+    </section>
+
+    <!-- Add Room Modal -->
+    <div id="addRoomModal" class="modal" style="color: black;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Room</h2>
+            <form id="addRoomForm">
+                <label for="roomNo">Room No:</label>
+                <input type="text" id="roomNo" name="roomNo" required>
+
+                <label for="assignedEmployeeId">Assigned Employee ID:</label>
+                <input type="text" id="assignedEmployeeId" name="assignedEmployeeId" required>
+
+                <label for="roomType">Room Type:</label>
+                <select id="roomType" name="roomType" required>
+                    <option value="">Select Room Type</option>
+                    <option value="Single">Single</option>
+                    <option value="Double">Double</option>
+                    <option value="Suite">Suite</option>
+                </select>
+
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" required>
+
+                <label for="availability">Availability:</label>
+                <select id="availability" name="availability" required>
+                    <option value="">Select Availability</option>
+                    <option value="YES">Yes</option>
+                    <option value="NO">No</option>
+                </select>
+
+                <label for="roomImage">Room Image:</label>
+                <!--<input type="file" id="roomImage" name="roomImage" required>-->
+                <input type="file" id="roomImage" name="roomImage" accept="image/*" multiple required>
+
+                <button type="submit">Add Room</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Room Details Modal -->
+    <div id="roomDetailsModal" class="modal" >
+        <div class="modal-content" style="background-color: navy;">
+            <span class="close">&times;</span>
+            <h2>Room Details</h2>
+            <div id="roomDetails"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript code
+        const addRoomBtn = document.getElementById('addRoomBtn');
+        const addRoomModal = document.getElementById('addRoomModal');
+        const roomTable = document.getElementById('roomTable');
+        const roomTableBody = document.getElementById('roomTableBody');
+        const roomDetailsModal = document.getElementById('roomDetailsModal');
+
+        // Open Add Room Modal
+        addRoomBtn.addEventListener('click', function() {
+            addRoomModal.style.display = 'block';
+        });
+
+        // Close Add Room Modal
+        const addRoomModalCloseBtn = document.getElementsByClassName('close')[0];
+        addRoomModalCloseBtn.addEventListener('click', function() {
+            addRoomModal.style.display = 'none';
+        });
+
+        // Close Room Details Modal
+        const roomDetailsModalCloseBtn = document.getElementsByClassName('close')[1];
+        roomDetailsModalCloseBtn.addEventListener('click', function() {
+            roomDetailsModal.style.display = 'none';
+        });
+
+        // Handle Add Room Form Submission
+        const addRoomForm = document.getElementById('addRoomForm');
+        addRoomForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const roomData = Object.fromEntries(formData.entries());
+            // Call the server to save room data (you need to implement this API)
+            saveRoomData(roomData);
+            addRoomModal.style.display = 'none';
+            addRoomForm.reset();
+        });
+
+        // Function to save room data on the server (you need to implement this API)
+
+
+        /*
+        function saveRoomData(roomData) {
+        console.log('Room Data:', roomData);
+            // Call your server API to save the room data
+               // Make a POST request to save user info
+        fetch('/saveRoomData', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(roomData)
+        })
+        .then(response => {
+        if (response.ok) {
+            console.log('User info saved successfully');
+            // Redirect to the next page
+            //window.location.href = 'blank.html';
+            response.json().then(data => {
+                console.log(data);
+            });
+        } else {
+            console.error('Failed to save user info');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving user info:', error);
+    });
+            // Example: fetch('/api/rooms', { method: 'POST', body: JSON.stringify(roomData), headers: { 'Content-Type': 'application/json' } })
+            // .then(response => response.json())
+            // .then(data => console.log(data))
+            // .catch(error => console.error('Error:', error));
+
+            // Fetch and display the updated room list
+            fetchRoomList();
+        }
+        */
+
+/*
+        function saveRoomData(roomData) {
+            const formData = new FormData();
+            formData.append('roomNo', roomData.roomNo);
+            formData.append('assignedEmployeeId', roomData.assignedEmployeeId);
+            formData.append('roomType', roomData.roomType);
+            formData.append('price', roomData.price);
+            formData.append('availability', roomData.availability);
+            formData.append('roomImage', roomData.roomImage.files[0]);
+        
+            fetch('/saveRoomData', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Fetch and display the updated room list
+                fetchRoomList();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+*/
+
+
+    function saveRoomData(roomData) {
+    const formData = new FormData();
+    formData.append('roomNo', roomData.roomNo);
+    formData.append('assignedEmployeeId', roomData.assignedEmployeeId);
+    formData.append('roomType', roomData.roomType);
+    formData.append('price', roomData.price);
+    formData.append('availability', roomData.availability);
+    formData.append('roomImage', roomData.roomImage.files);
+
+    fetch('/saveRoomData', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showSuccessMessage(data.message);
+        } else {
+            showErrorMessage(data.message);
+        }
+        fetchRoomList();
+    })
+    .catch(error => {
+        showErrorMessage('Error saving room data');
+        console.error('Error:', error);
+    });
+}
+
+        // Function to fetch and display room list
+        async function fetchRoomList() {
+            try {
+                const response = await fetch('/api/rooms/all');
+                const rooms = await response.json();
+                populateRoomTable(rooms);
+            } catch (error) {
+                console.error(error);
+                alert('Error fetching room data');
+            }
+        }
+
+        // Function to populate the room table with data
+        function populateRoomTable(rooms) {
+            roomTableBody.innerHTML = '';
+
+            rooms.forEach(room => {
+                const row = roomTableBody.insertRow();
+                row.insertCell(0).textContent = room.roomNo;
+                row.insertCell(1).textContent = room.roomType;
+                row.insertCell(2).textContent = room.employeeID;
+                row.insertCell(3).textContent = room.price;
+                row.insertCell(4).textContent = room.availability;
+
+                // Add room image
+                const roomImageCell = row.insertCell(5);
+                const roomImage = document.createElement('img');
+                roomImage.src = `${room.roomLink}`; // Adjust the path based on your setup
+                roomImage.style.width = '100px'; // Adjust the width as needed
+                roomImage.style.height = '75px'; // Adjust the height as needed
+                roomImageCell.appendChild(roomImage);
+
+                // Add show info button
+                const showInfoButtonCell = row.insertCell(6);
+                const showInfoButton = document.createElement('button');
+                showInfoButton.textContent = 'Show Info';
+                showInfoButton.addEventListener('click', () => showRoomDetails(room));
+                showInfoButtonCell.appendChild(showInfoButton);
+            });
+        }
+
+        // Function to show room details
+        function showRoomDetails(room) {
+            const roomDetails = document.getElementById('roomDetails');
+            roomDetails.innerHTML = `
+                <p><strong>Room No:</strong> ${room.roomNo}</p>
+                <p><strong>Room Type:</strong> ${room.roomType}</p>
+                <p><strong>Assigned Employee ID:</strong> ${room.employeeID}</p>
+                <p><strong>Price:</strong> ${room.price}</p>
+                <p><strong>Availability:</strong> ${room.availability}</p>
+                <p><strong>Room Image:</strong></p>
+                <img src="${room.roomImage}" width="200" height="150">
+            `;
+            roomDetailsModal.style.display = 'block';
+        }
+
+        function showSuccessMessage(message) {
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message', 'success');
+            messageContainer.textContent = message;
+            document.body.appendChild(messageContainer);
+        
+            setTimeout(() => {
+                messageContainer.remove();
+            }, 5000); // Hide the message after 5 seconds
+        }
+        
+        function showErrorMessage(message) {
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message', 'error');
+            messageContainer.textContent = message;
+            document.body.appendChild(messageContainer);
+        
+            setTimeout(() => {
+                messageContainer.remove();
+            }, 5000); // Hide the message after 5 seconds
+        }
+
+        // Fetch and display room list when the page loads
+        document.addEventListener('DOMContentLoaded', fetchRoomList);
+    </script>
+</body>
+</html>

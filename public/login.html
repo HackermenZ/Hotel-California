@@ -1,0 +1,121 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel California - Login</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Include your styles if needed -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('loginBG.jpg') center/cover no-repeat;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #666;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Hotel California - Sign Up</h2>
+        <form id="loginForm" action="/saveUserInfo" method="POST" onsubmit="submitForm();return false;">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+            <button type="submit">Submit</button>
+
+           <!--- <button onclick="submitForm()">Submit</button> -->
+        </form>
+    </div>
+
+    <script src="login2.js" >
+        /*
+        function submitForm() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+        
+            // Create a JSON object with user information
+            const userInfo = {
+                username: username,
+                password: password,
+                phoneNumber: phoneNumber
+            };
+        
+            // Make a POST request to save user info
+            fetch('/saveUserInfo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userInfo)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('User info saved successfully');
+                    // Redirect to the next page
+                    window.location.href = 'blank.html';
+                } else {
+                    console.error('Failed to save user info');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving user info:', error);
+            });
+        }
+        */
+        
+    </script> <!-- Include your JavaScript file -->
+</body>
+</html>

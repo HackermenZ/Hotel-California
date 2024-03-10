@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room Booking</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      #heading {
+        padding-top: 20px;
+        font-size: 70px;
+        color: white;
+      }
+
+      .s-eMessage {
+        margin-top: 100px;
+      }
+
+      .customerName,
+      .customerPassword {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        border: 1px;
+        border-radius: 1px;
+        margin-left: 35%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      .customerName {
+        margin-top: 30px;
+      }
+
+      .customerPassword {
+        margin-top: 2px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .tablediv {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+        margin-right: 10px;
+      }
+
+      .roomTable {
+        align-self: center;
+        /* background-color: rgb(212, 9, 77); */
+        /* border: 2px solid black; */
+        margin-left: 20%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      td,
+      th {
+        padding: 15px;
+        /* border: 2px solid black; */
+      }
+
+      .reserveButtonDiv {
+        border: 0px solid black;
+      }
+
+      .s-eButton {
+        padding: 20px;
+        width: 150%;
+        font-size: 24px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+      }
+
+      .s-eContainer {
+        /* background-color: red; */
+        height: 220px;
+        padding: 20%;
+        padding-top: 15%;
+        margin-right: 80px;
+      }
+
+      /* test */
+      /* nav bar previous version color */
+      :root {
+        --color-primary: #0073ff;
+        --color-white: #e9e9e9;
+        --color-black: #141d28;
+        --color-black-1: #212b38;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+
+      .logo {
+        color: var(--color-white);
+        font-size: 30px;
+      }
+
+      .logo span {
+        color: var(--color-primary);
+      }
+
+      .menu-bar {
+        background-color: var(--color-black);
+        height: 80px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        /* justify-content: center; */
+        align-items: center;
+        padding: 0 5%;
+        position: relative;
+      }
+
+      .menu-bar ul {
+        list-style: none;
+        display: flex;
+      }
+
+      .menu-bar ul li {
+        padding: 10px 30px;
+        position: relative;
+      }
+
+      .menu-bar ul li a {
+        font-size: 20px;
+        color: var(--color-white);
+        text-decoration: none;
+
+        transition: all 0.3s;
+      }
+
+      .menu-bar ul li a:hover {
+        color: var(--color-primary);
+      }
+
+      .fas {
+        float: right;
+        margin-left: 10px;
+        padding-top: 3px;
+      }
+
+      /* dropdown menu style */
+      .dropdown-menu {
+        display: none;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background-color: var(--color-black);
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul {
+        display: block;
+        margin: 10px;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul li {
+        width: 150px;
+        padding: 10px;
+      }
+
+      .dropdown-menu-1 {
+        display: none;
+      }
+
+      .dropdown-menu ul li:hover .dropdown-menu-1 {
+        display: block;
+        position: absolute;
+        left: 150px;
+        top: 0;
+        background-color: var(--color-black);
+      }
+    </style>
+  </head>
+  <body>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f8ecec;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        /* background-color: #4682b4; */
+        color: white;
+        text-align: center;
+        /* padding: 20px; */
+      }
+
+      section {
+        margin: 20px;
+      }
+
+      table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #4682b4;
+        color: white;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #100349;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 30%;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        background-color: #4682b4;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #345b7d;
+      }
+    </style>
+    <header>
+      <div class="logo">
+        <img
+          src="iamge/logo.jpg"
+          width="2px"
+          alt="Hotel Logo"
+          style="height: 50; width: 50px"
+        />
+      </div>
+
+      <!-- !this is the nav bar , here page change can be done -->
+      <nav>
+        <div class="menu-bar">
+          <h1 class="logo">hotel<span>California.</span></h1>
+          <ul>
+            <li><a href="index2.html">Home</a></li>
+            <!-- add html file name in href and change the name according to need -->
+            <li><a href="roomCustomer.html">Rooms</a></li>
+            <li><a href="amenities.html">Amenities</a></li>
+            <li><a href="location.html">Location</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="#">Contact us</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <section>
+      <h2 style="text-align: center;">Room List</h2>
+      <table id="roomTable">
+        <thead>
+          <tr>
+            <th>Room No</th>
+            <th>Room Type</th>
+            <th>Assigned Employee Name</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Room Image</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="roomTableBody"></tbody>
+      </table>
+    </section>
+
+    <!-- Room Details Modal -->
+    <div id="roomDetailsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Room Details</h2>
+        <div id="roomDetails"></div>
+        <button onclick="openBookingForm()">Book Now</button>
+      </div>
+    </div>
+
+    <!-- Booking Form Modal -->
+    <div id="bookingFormModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Booking Form</h2>
+        <form id="bookingForm">
+          <label for="checkInDate">Check-In Date:</label>
+          <input type="date" id="checkInDate" name="checkInDate" required />
+
+          <label for="checkOutDate">Check-Out Date:</label>
+          <input type="date" id="checkOutDate" name="checkOutDate" required />
+
+          <button type="submit" onclick="bookRoom()">Book</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      /*
+        document.addEventListener('DOMContentLoaded', () => {
+            const roomTable = document.getElementById('roomTable');
+            const roomTableBody = document.getElementById('roomTableBody');
+            const roomDetailsModal = document.getElementById('roomDetailsModal');
+            const bookingFormModal = document.getElementById('bookingFormModal');
+            const roomDetailsContent = document.getElementById('roomDetails');
+            const bookingForm = document.getElementById('bookingForm');
+            let selectedRoom;
+        
+            // Fetch and display room list when the page loads
+            fetchRoomList();
+        
+            // Function to fetch and display room list
+            async function fetchRoomList() {
+                try {
+                    const response = await fetch('/api/rooms/all'); // Replace with your API endpoint
+                    const rooms = await response.json();
+                    populateRoomTable(rooms);
+                } catch (error) {
+                    console.error(error);
+                    alert('Error fetching room data');
+                }
+            }
+        
+            // Function to populate the room table with data
+            function populateRoomTable(rooms) {
+                roomTableBody.innerHTML = '';
+        
+                rooms.forEach(room => {
+                    const row = roomTableBody.insertRow();
+                    row.insertCell(0).textContent = room.roomNo;
+                    row.insertCell(1).textContent = room.roomType;
+                    row.insertCell(2).textContent = room.employeeID;
+                    row.insertCell(3).textContent = room.price;
+                    row.insertCell(4).textContent = room.availability;
+        
+                    // Add room image
+                    const roomImageCell = row.insertCell(5);
+                    const roomImage = document.createElement('img');
+                    roomImage.src = `${room.roomImage}`; // Adjust the path based on your setup
+                    roomImage.style.width = '100px'; // Adjust the width as needed
+                    roomImage.style.height = '75px'; // Adjust the height as needed
+                    roomImageCell.appendChild(roomImage);
+        
+                    // Add show info button
+                    const showInfoButtonCell = row.insertCell(6);
+                    const showInfoButton = document.createElement('button');
+                    showInfoButton.textContent = 'Show Info';
+                    showInfoButton.addEventListener('click', () => showRoomDetails(room));
+                    showInfoButtonCell.appendChild(showInfoButton);
+                });
+            }
+        
+            // Function to show room details
+            function showRoomDetails(room) {
+                selectedRoom = room;
+                const roomDetails = document.getElementById('roomDetails');
+                roomDetails.innerHTML = `
+                    <p><strong>Room No:</strong> ${room.roomNo}</p>
+                    <p><strong>Room Type:</strong> ${room.roomType}</p>
+                    <p><strong>Assigned Employee ID:</strong> ${room.employeeID}</p>
+                    <p><strong>Price:</strong> ${room.price}</p>
+                    <p><strong>Availability:</strong> ${room.availability}</p>
+                    <p><strong>Room Image:</strong></p>
+                    <img src="${room.roomImage}" width="200" height="150">
+                `;
+                roomDetailsModal.style.display = 'block';
+            }
+        
+            // Function to open booking form
+            window.openBookingForm = () => {
+                bookingFormModal.style.display = 'block';
+            };
+        
+            // Function to close modals
+            window.closeModal = () => {
+                roomDetailsModal.style.display = 'none';
+                bookingFormModal.style.display = 'none';
+            };
+        
+            // Function to book a room
+            window.bookRoom = () => {
+                const checkInDate = document.getElementById('checkInDate').value;
+                const checkOutDate = document.getElementById('checkOutDate').value;
+                console.log('Booking room:', selectedRoom, 'Check-in:', checkInDate, 'Check-out:', checkOutDate);
+                const name='Sajid';
+        
+                // Call your backend API to book the room
+                fetch('/api/bookRoom', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        roomId: selectedRoom.roomNo,
+                        checkInDate,
+                        checkOutDate,
+                        name
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Booking response:', data);
+                    // You can handle the response as needed
+                    // For example, display a success message or redirect to another page
+                    showSuccessMessage('Room booked successfully!');
+                    // Close the booking form modal
+                    closeModal();
+                })
+                .catch(error => {
+                    console.error('Error booking room:', error);
+                    // Display an error message if booking fails
+                    showErrorMessage('Error booking room. Please try again.');
+                });
+            };
+        
+            // Function to show success message
+            function showSuccessMessage(message) {
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message', 'success');
+                messageContainer.textContent = message;
+                document.body.appendChild(messageContainer);
+        
+                setTimeout(() => {
+                    messageContainer.remove();
+                }, 5000); // Hide the message after 5 seconds
+            }
+        
+            // Function to show error message
+            function showErrorMessage(message) {
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message', 'error');
+                messageContainer.textContent = message;
+                document.body.appendChild(messageContainer);
+        
+                setTimeout(() => {
+                    messageContainer.remove();
+                }, 5000); // Hide the message after 5 seconds
+            }
+        });
+        */
+      document.addEventListener("DOMContentLoaded", () => {
+        const roomTable = document.getElementById("roomTable");
+        const roomTableBody = document.getElementById("roomTableBody");
+        const roomDetailsModal = document.getElementById("roomDetailsModal");
+        const bookingFormModal = document.getElementById("bookingFormModal");
+        const roomDetailsContent = document.getElementById("roomDetails");
+        const bookingForm = document.getElementById("bookingForm");
+        let selectedRoom;
+
+        // Fetch and display room list when the page loads
+        fetchRoomList();
+
+        // Function to fetch and display room list
+        async function fetchRoomList() {
+          try {
+            const response = await fetch("/api/rooms/all"); // Replace with your API endpoint
+            const rooms = await response.json();
+            populateRoomTable(rooms);
+          } catch (error) {
+            console.error(error);
+            alert("Error fetching room data");
+          }
+        }
+
+        // Function to populate the room table with data
+        function populateRoomTable(rooms) {
+          roomTableBody.innerHTML = "";
+
+          rooms.forEach((room) => {
+            const row = roomTableBody.insertRow();
+            row.insertCell(0).textContent = room.roomNo;
+            row.insertCell(1).textContent = room.roomType;
+            row.insertCell(2).textContent = room.firstName + " " + room.lastName;
+            row.insertCell(3).textContent = room.price;
+            row.insertCell(4).textContent = room.availability;
+
+            // Add room image
+            const roomImageCell = row.insertCell(5);
+            const roomImage = document.createElement("img");
+            roomImage.src = `${room.roomLink}`; // Adjust the path based on your setup
+            roomImage.style.width = "100px"; // Adjust the width as needed
+            roomImage.style.height = "75px"; // Adjust the height as needed
+            roomImageCell.appendChild(roomImage);
+
+            // Add show info button
+            const showInfoButtonCell = row.insertCell(6);
+            const showInfoButton = document.createElement("button");
+            showInfoButton.textContent = "Show Info";
+            showInfoButton.addEventListener("click", () =>
+              showRoomDetails(room)
+            );
+            showInfoButtonCell.appendChild(showInfoButton);
+          });
+        }
+
+        // Function to show room details
+        function showRoomDetails(room) {
+          selectedRoom = room;
+          const roomDetails = document.getElementById("roomDetails");
+          roomDetails.innerHTML = `
+                    <p><strong>Room No:</strong> ${room.roomNo}</p>
+                    <p><strong>Room Type:</strong> ${room.roomType}</p>
+                    <p><strong>Assigned Employee ID:</strong> ${room.employeeID}</p>
+                    <p><strong>Price:</strong> ${room.price}</p>
+                    <p><strong>Availability:</strong> ${room.availability}</p>
+                    <p><strong>Room Image:</strong></p>
+                    <img src="${room.roomImage}" width="200" height="150">
+                `;
+          roomDetailsModal.style.display = "block";
+        }
+
+        // Function to open booking form
+        window.openBookingForm = () => {
+          bookingFormModal.style.display = "block";
+        };
+
+        // Function to close modals
+        window.closeModal = () => {
+          roomDetailsModal.style.display = "none";
+          bookingFormModal.style.display = "none";
+        };
+
+        // Function to book a room
+        window.bookRoom = () => {
+          const checkInDate = document.getElementById("checkInDate").value;
+          const checkOutDate = document.getElementById("checkOutDate").value;
+          console.log(
+            "Booking room:",
+            selectedRoom,
+            "Check-in:",
+            checkInDate,
+            "Check-out:",
+            checkOutDate
+          );
+          const name = localStorage.getItem("username");
+          const pass = localStorage.getItem("password");
+          console.log(name);
+          console.log(pass);
+
+          // Call your backend API to book the room
+          fetch("/api/bookRoom", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              roomId: selectedRoom.roomNo,
+              checkInDate,
+              checkOutDate,
+              name,
+              pass,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Booking response:", data);
+              // You can handle the response as needed
+              // For example, display a success message or redirect to another page
+              showSuccessMessage("Room booked successfully!");
+              // Close the booking form modal
+              closeModal();
+            })
+            .catch((error) => {
+              console.error("Error booking room:", error);
+              // Display an error message if booking fails
+              showErrorMessage("Error booking room. Please try again.");
+            });
+        };
+
+        // Function to show success message
+        function showSuccessMessage(message) {
+          const messageContainer = document.createElement("div");
+          messageContainer.classList.add("message", "success");
+          messageContainer.textContent = message;
+          document.body.appendChild(messageContainer);
+
+          setTimeout(() => {
+            messageContainer.remove();
+          }, 5000); // Hide the message after 5 seconds
+        }
+
+        // Function to show error message
+        function showErrorMessage(message) {
+          const messageContainer = document.createElement("div");
+          messageContainer.classList.add("message", "error");
+          messageContainer.textContent = message;
+          document.body.appendChild(messageContainer);
+
+          setTimeout(() => {
+            messageContainer.remove();
+          }, 5000); // Hide the message after 5 seconds
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <style>
+        /* Add your styling for the introduction and form here */
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #4682b4;
+        color: white;
+        text-align: center;
+        /* padding: 50px; */
+      }
+
+      section {
+        margin: 20px;
+      }
+
+      form {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        color: black;
+      }
+
+      form label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      form button {
+        background-color: #4682b4;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #4682b4;
+        color: white;
+      }
+    </style>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- ! -->
+    <style>
+      #heading {
+        padding-top: 20px;
+        font-size: 70px;
+        color: white;
+      }
+
+      .s-eMessage {
+        margin-top: 100px;
+      }
+
+      .customerName,
+      .customerPassword {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        border: 1px;
+        border-radius: 1px;
+        margin-left: 35%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      .customerName {
+        margin-top: 30px;
+      }
+
+      .customerPassword {
+        margin-top: 2px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .tablediv {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+        margin-right: 10px;
+      }
+
+      .roomTable {
+        align-self: center;
+        /* background-color: rgb(212, 9, 77); */
+        /* border: 2px solid black; */
+        margin-left: 20%;
+        margin-right: 35%;
+        width: 30%;
+      }
+
+      td,
+      th {
+        padding: 15px;
+        /* border: 2px solid black; */
+      }
+
+      .reserveButtonDiv {
+        border: 0px solid black;
+      }
+
+      .s-eButton {
+        padding: 20px;
+        width: 150%;
+        font-size: 24px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+      }
+
+      .s-eContainer {
+        /* background-color: red; */
+        height: 220px;
+        padding: 20%;
+        padding-top: 15%;
+        margin-right: 80px;
+      }
+
+      /* test */
+      /* nav bar previous version color */
+      :root {
+        --color-primary: #0073ff;
+        --color-white: #e9e9e9;
+        --color-black: #141d28;
+        --color-black-1: #212b38;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+
+      .logo {
+        color: var(--color-white);
+        font-size: 30px;
+      }
+
+      .logo span {
+        color: var(--color-primary);
+      }
+
+      .menu-bar {
+        background-color: var(--color-black);
+        height: 80px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        /* justify-content: center; */
+        align-items: center;
+        padding: 0 5%;
+        position: relative;
+      }
+
+      .menu-bar ul {
+        list-style: none;
+        display: flex;
+      }
+
+      .menu-bar ul li {
+        padding: 10px 30px;
+        position: relative;
+      }
+
+      .menu-bar ul li a {
+        font-size: 20px;
+        color: var(--color-white);
+        text-decoration: none;
+
+        transition: all 0.3s;
+      }
+
+      .menu-bar ul li a:hover {
+        color: var(--color-primary);
+      }
+
+      .fas {
+        float: right;
+        margin-left: 10px;
+        padding-top: 3px;
+      }
+
+      /* dropdown menu style */
+      .dropdown-menu {
+        display: none;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background-color: var(--color-black);
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul {
+        display: block;
+        margin: 10px;
+      }
+
+      .menu-bar ul li:hover .dropdown-menu ul li {
+        width: 150px;
+        padding: 10px;
+      }
+
+      .dropdown-menu-1 {
+        display: none;
+      }
+
+      .dropdown-menu ul li:hover .dropdown-menu-1 {
+        display: block;
+        position: absolute;
+        left: 150px;
+        top: 0;
+        background-color: var(--color-black);
+      }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Employee Management</h1>
+    </header>
+    
+    <div id="employeeInfo"></div>
+
+
+    <section>
+        <h2>Add Employee</h2>
+        <button onclick="showAddEmployeeForm()">Add Employee</button>
+        <form id="addEmployeeForm" style="display: none;" onsubmit="submitEmployeeForm(event)">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" required>
+
+            <label for="position">Position:</label>
+            <input type="text" id="position" required>
+
+            <label for="salary">Salary:</label>
+            <input type="number" id="salary" required>
+
+            <label for="assignedRoomNo">Assigned Room No:</label>
+            <input type="text" id="assignedRoomNo" required>
+
+            <label for="managerId">Manager ID:</label>
+            <input type="text" id="managerId" required>
+
+            <label for="employeeShift">Employee Shift:</label>
+            <input type="text" id="employeeShift" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Employee List</h2>
+        <table id="employeeTable">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Assigned Room No</th>
+                    <th>Manager ID</th>
+                    <th>Employee Shift</th>
+                    <th>View Details</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTableBody"></tbody>
+        </table>
+    </section>
+
+    <script>
+        // employee.js
+
+// Function to show the add employee form
+function showAddEmployeeForm() {
+    const addEmployeeForm = document.getElementById('addEmployeeForm');
+    addEmployeeForm.style.display = 'block';
+}
+
+// Function to submit the add employee form
+function submitEmployeeForm(event) {
+    event.preventDefault();
+
+    // Retrieve form data
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const position = document.getElementById('position').value;
+    const salary = document.getElementById('salary').value;
+    const roomNo = document.getElementById('assignedRoomNo').value;
+    const managerID = document.getElementById('managerId').value;
+    const employeeShift = document.getElementById('employeeShift').value;
+
+    // Call the server to save employee data (you need to implement this API)
+    saveEmployeeData(firstName, lastName, position, salary, roomNo, managerID, employeeShift);
+
+    // Optionally, you can clear the form fields or hide the form
+    const addEmployeeForm = document.getElementById('addEmployeeForm');
+    addEmployeeForm.style.display = 'none';
+
+    // Fetch and display the updated employee list
+    fetchEmployeeList();
+}
+
+// Function to save employee data on the server (you need to implement this API)
+function saveEmployeeData(firstName, lastName, position, salary, roomNo, managerID, employeeShift) {
+    // Call your server API to save the employee data
+    numberOfCustomerF=Math.random();
+    const employeeID=Math.floor(numberOfCustomerF*1000000);
+    // Create a JSON object with user information
+    const employeeInfo = {
+        //employeeID: employeeID,
+        firstName:firstName,
+        lastName:lastName,
+        position:position,
+        salary:salary,
+        roomNo:roomNo,
+        managerID:managerID,
+        employeeShift:employeeShift
+    };
+    console.log(employeeInfo);
+
+    // Make a POST request to save user info
+    fetch('/saveEmployeeInfo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(employeeInfo)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('User info saved successfully');
+            // Redirect to the next page
+            //window.location.href = 'blank.html';
+            response.json().then(data => {
+                console.log(data);
+            });
+        } else {
+            console.error('Failed to save user info');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving user info:', error);
+    });
+    // You may use fetch or any other AJAX library for this
+    // Example: fetch('/api/employees', { method: 'POST', body: JSON.stringify({ firstName, lastName, position, salary, assignedRoomNo, managerId, employeeShift }), headers: { 'Content-Type': 'application/json' } })
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+    // .catch(error => console.error('Error:', error));
+}
+
+// Function to fetch and display employee list
+async function fetchEmployeeList() {
+    try {
+        const response = await fetch('/api/employees');
+        const employees = await response.json();
+        populateEmployeeTable(employees);
+    } catch (error) {
+        console.error(error);
+        alert('Error fetching employee data');
+    }
+}
+
+// Function to populate the employee table with data
+function populateEmployeeTable(employees) {
+    const tableBody = document.getElementById('employeeTableBody');
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    employees.forEach(employee => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = employee.employeeID;
+        row.insertCell(1).textContent = employee.firstName;
+        row.insertCell(2).textContent = employee.lastName;
+        row.insertCell(3).textContent = employee.position;
+        row.insertCell(4).textContent = employee.salary;
+        row.insertCell(5).textContent = employee.roomNo;
+        row.insertCell(6).textContent = employee.managerID;
+        row.insertCell(7).textContent = employee.shiftName;
+
+        // Add a button to show employee info
+        const showInfoButtonCell = row.insertCell(8);
+        const showInfoButton = document.createElement('button');
+        showInfoButton.textContent = 'Show Info';
+        showInfoButton.addEventListener('click', () => showEmployeeInfo(employee));
+        showInfoButtonCell.appendChild(showInfoButton);
+    });
+}
+
+// Function to show detailed employee information
+function showEmployeeInfo(employee) {
+    const employeeInfoDiv = document.getElementById('employeeInfo');
+    const employeeImage=document.createElement('img');
+    employeeInfoDiv.innerHTML = `
+        <h2>Employee Information</h2>
+        <p><strong>Employee ID:</strong> ${employee.employeeID}</p>
+        <p><strong>First Name:</strong> ${employee.firstName}</p>
+        <p><strong>Last Name:</strong> ${employee.lastName}</p>
+        <p><strong>Position:</strong> ${employee.position}</p>
+        <p><strong>Salary:</strong> ${employee.salary}</p>
+        <p><strong>Assigned Room No:</strong> ${employee.roomNo}</p>
+        <p><strong>Manager ID:</strong> ${employee.managerID}</p>
+        <p><strong>Employee Shift:</strong> ${employee.shiftName}</p>
+        <p><strong>Employee Image:</strong></p>
+        <img src="${employee.employeePhoto}">
+    `;
+    employeeImage.src=`${employee.employeePhoto}`;
+}
+
+// Fetch and display employee list when the page loads
+document.addEventListener('DOMContentLoaded', fetchEmployeeList);
+
+    </script>
+</body>
+</html>

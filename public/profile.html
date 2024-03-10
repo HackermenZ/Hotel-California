@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #profileContainer {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #profilePicture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        #customerName,
+        #customerPassword,
+        #cost {
+            margin-bottom: 10px;
+        }
+
+        #logoutButton {
+            background-color: #4682b4;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #logoutButton:hover {
+            background-color: #345b7d;
+        }
+    </style>
+</head>
+<body>
+    <div id="profileContainer">
+        <img id="profilePicture" src="https://th.bing.com/th/id/OIP.SSMNryrmPI2Q16BD9H5TUwHaI5?rs=1&pid=ImgDetMain" alt="Profile Picture">
+        <div id="customerName"></div>
+        <div id="customerPassword"></div>
+        <div id="cost"></div>
+        <button id="logoutButton">Logout</button>
+    </div>
+
+    <script>
+        // Retrieve data from localStorage
+        const customerName = localStorage.getItem('username');
+        const customerPassword = localStorage.getItem('password');
+
+        // Display customer name and password
+        document.getElementById('customerName').textContent = `Customer Name: ${customerName}`;
+        document.getElementById('customerPassword').textContent = `Customer Password: ${customerPassword}`;
+
+        // Fetch and display cost from '/api/cost'
+        fetch(`/api/cost/${customerName}`)
+            .then(response => response.json())
+            .then(costData => {
+                const costElement = document.getElementById('cost');
+                costElement.textContent = `Cost: ${costData.cost}`;
+            })
+            .catch(error => console.error('Error fetching cost:', error));
+
+        // Logout functionality
+        const logoutButton = document.getElementById('logoutButton');
+        logoutButton.addEventListener('click', () => {
+            // Implement logout logic here (clear local storage, redirect to login page, etc.)
+            // For demonstration purposes, we'll clear localStorage
+            localStorage.clear();
+            // Redirect to the login page or perform other logout actions as needed
+            window.location.href = 'loginCustomer.html';
+        });
+    </script>
+</body>
+</html>

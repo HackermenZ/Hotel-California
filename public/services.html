@@ -1,0 +1,695 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Management</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #151616;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        section {
+            margin: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #24b746;
+            color: white;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        form input, form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #4682B4;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Services Management</h1>
+    </header>
+
+    <section>
+        <h2>Services List</h2>
+        <button onclick="openSearchMenu()">Search</button>
+        <table id="servicesTable">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Customer ID</th>
+                    <th>Order Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="servicesTableBody"></tbody>
+        </table>
+    </section>
+
+  
+    <div id="searchMenu" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Search Services</h2>
+            <form id="searchForm">
+                <label for="searchAttribute">Search By:</label>
+                <select id="searchAttribute" name="searchAttribute" required>
+                    <option value="description">Description</option>
+                    <option value="price">Price</option>
+                    <option value="availability">Availability</option>
+                    <option value="customerID">Customer ID</option>
+                    <option value="orderDate">Order Date</option>
+                </select>
+                <label for="searchValue">Search Value:</label>
+                <input type="text" id="searchValue" name="searchValue" required>
+                <button type="button" onclick="searchServices()">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="serviceDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Service Details</h2>
+            <div id="serviceDetails"></div>
+            <button onclick="openAddServiceForm()">Add New Service</button>
+        </div>
+    </div>
+
+   
+    <div id="addServiceFormModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add New Service</h2>
+            <form id="addServiceForm">
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" required>
+
+                <label for="availability">Availability:</label>
+                <select id="availability" name="availability" required>
+                    <option value="available">Available</option>
+                    <option value="not_available">Not Available</option>
+                </select>
+
+
+                <button type="submit" onclick="addService()">Add Service</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchServices(); // Fetch services data on page load
+        });
+
+        async function fetchServices() {
+            try {
+                const response = await fetch('/api/services/all'); // Change the URL to your backend endpoint
+                const services = await response.json();
+                populateServicesTable(services);
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            }
+        }
+        // JavaScript code
+        const servicesTable = document.getElementById('servicesTable');
+        const servicesTableBody = document.getElementById('servicesTableBody');
+        const searchMenu = document.getElementById('searchMenu');
+        const serviceDetailsModal = document.getElementById('serviceDetailsModal');
+        const addServiceFormModal = document.getElementById('addServiceFormModal');
+
+        // Mock data for demonstration
+        //const servicesData = [
+          //  { serviceID: 1, description: 'Service 1', price: 20, availability: 'available', customerID: 101, orderDate: '2024-02-14' },
+           // { serviceID: 2, description: 'Service 2', price: 30, availability: 'not_available', customerID: 102, orderDate: '2024-02-15' },
+            // Add more services as needed
+        //];
+
+        // Function to populate the services table with data
+        function populateServicesTable(services) {
+            servicesTableBody.innerHTML = '';
+
+            services.forEach(service => {
+                const row = servicesTableBody.insertRow();
+                row.insertCell(0).textContent = service.serviceID;
+                row.insertCell(1).textContent = service.description;
+                row.insertCell(2).textContent = service.price;
+                row.insertCell(3).textContent = service.availability;
+                row.insertCell(4).textContent = service.customerID;
+                row.insertCell(5).textContent = service.orderDate;
+
+                // Add show info button
+                const showInfoButtonCell = row.insertCell(6);
+                const showInfoButton = document.createElement('button');
+                showInfoButton.textContent = 'Show Info';
+                showInfoButton.addEventListener('click', () => showServiceDetails(service));
+                showInfoButtonCell.appendChild(showInfoButton);
+            });
+        }
+
+        // Function to show service details
+        function showServiceDetails(service) {
+            const serviceDetails = document.getElementById('serviceDetails');
+            serviceDetails.innerHTML = `
+                <p><strong>Service ID:</strong> ${service.serviceID}</p>
+                <p><strong>Description:</strong> ${service.description}</p>
+                <p><strong>Price:</strong> ${service.price}</p>
+                <p><strong>Availability:</strong> ${service.availability}</p>
+                <p><strong>Customer ID:</strong> ${service.customerID}</p>
+                <p><strong>Order Date:</strong> ${service.orderDate}</p>
+            `;
+            serviceDetailsModal.style.display = 'block';
+        }
+
+        // Function to open search menu
+        function openSearchMenu() {
+            searchMenu.style.display = 'block';
+        }
+
+        // Function to close modal
+        function closeModal() {
+            searchMenu.style.display = 'none';
+            serviceDetailsModal.style.display = 'none';
+            addServiceFormModal.style.display = 'none';
+        }
+
+        // Function to search services
+        function searchServices() {
+            const searchAttribute = document.getElementById('searchAttribute').value;
+            const searchValue = document.getElementById('searchValue').value;
+
+            // Implement the search logic based on the chosen attribute and value
+            // For simplicity, just filtering the mock data here
+            const filteredServices = servicesData.filter(service => {
+                const value = service[searchAttribute].toString().toLowerCase();
+                return value.includes(searchValue.toLowerCase());
+            });
+
+            // Populate the table with the filtered services
+            populateServicesTable(filteredServices);
+
+            // Close the search menu
+            closeModal();
+        }
+
+        // Function to open add service form
+        function openAddServiceForm() {
+            addServiceFormModal.style.display = 'block';
+        }
+
+        // Function to add a new service
+        function addService() {
+            // Implement the logic to add a new service
+            // For simplicity, just logging the form data here
+            const addServiceForm = document.getElementById('addServiceForm');
+            const formData = new FormData(addServiceForm);
+            const newService = {};
+            formData.forEach((value, key) => {
+                newService[key] = value;
+            });
+
+            // For simplicity, using a static customerID and orderDate
+            newService.customerID = 103; // Replace with actual logic to get customer ID
+            newService.orderDate = new Date().toISOString().split('T')[0]; // Current date
+
+            // For simplicity, pushing the new service to the mock data
+            servicesData.push(newService);
+
+            // Populate the table with the updated data
+            populateServicesTable(servicesData);
+
+            // Close the add service form modal
+            closeModal();
+        }
+
+        // Initial population of services table
+        populateServicesTable(servicesData);
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Management</title>
+    <style>
+        /* ... (existing styles) */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fff893;
+            margin: 0;
+            padding: 0;
+            /*background-image: url('iamge/backiee-258614.jpg');*/
+        }
+
+        header {
+            background-color: #151616;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        section {
+            margin: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #24b746;
+            color: white;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgb(153, 201, 232);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-image: url('public/iamge/backiee-258614.jpg');
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        form input, form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #4682B4;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Services Management</h1>
+    </header>
+
+    <section>
+        <h2>Services List</h2>
+        <div>
+            <button onclick="openSearchMenu()">Search</button>
+            <button onclick="openAddServiceForm()">Add New Service</button>
+        </div>
+        <table id="servicesTable">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <!-- <th>Customer ID</th> -->
+                    <!-- <th>Order Date</th> -->
+                    <th>Photo</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="servicesTableBody"></tbody>
+        </table>
+    </section>
+
+    <!-- Search Menu Modal -->
+    <div id="searchMenu" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Search Services</h2>
+            <form id="searchForm">
+                <label for="searchAttribute">Search By:</label>
+                <select id="searchAttribute" name="searchAttribute" required>
+                    <option value="description">Description</option>
+                    <option value="price">Price</option>
+                    <option value="availability">Availability</option>
+                    <option value="customerID">Customer ID</option>
+                    <option value="orderDate">Order Date</option>
+                </select>
+                <label for="searchValue">Search Value:</label>
+                <input type="text" id="searchValue" name="searchValue" required>
+                <button type="button" onclick="searchServices()">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Service Details Modal -->
+    <div id="serviceDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Service Details</h2>
+            <div id="serviceDetails"></div>
+        </div>
+    </div>
+
+    <!-- Add Service Form Modal -->
+    <div id="addServiceFormModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add New Service</h2>
+            <form id="addServiceForm" onsubmit="addService(event)">
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" required>
+
+                <label for="availability">Availability:</label>
+                <select id="availability" name="availability" required>
+                    <option value="available">Available</option>
+                    <option value="not_available">Not Available</option>
+                </select>
+
+                <!-- You may include other attributes like customerID, orderDate as needed -->
+
+                <button type="submit">Add Service</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchServices(); // Fetch services data on page load
+        });
+
+        async function fetchServices() {
+            try {
+                const response = await fetch('/api/services/all'); // Change the URL to your backend endpoint
+                const services = await response.json();
+                populateServicesTable(services);
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            }
+        }
+
+        const servicesTable = document.getElementById('servicesTable');
+        const servicesTableBody = document.getElementById('servicesTableBody');
+        const searchMenu = document.getElementById('searchMenu');
+        const serviceDetailsModal = document.getElementById('serviceDetailsModal');
+        const addServiceFormModal = document.getElementById('addServiceFormModal');
+        const serviceForm = document.getElementById('addServiceForm');
+
+        function populateServicesTable(services) {
+            servicesTableBody.innerHTML = '';
+
+            services.forEach(service => {
+                const row = servicesTableBody.insertRow();
+                console.log(service.photo);
+                row.insertCell(0).textContent = service.serviceID;
+                row.insertCell(1).textContent = service.description;
+                row.insertCell(2).textContent = service.price;
+                row.insertCell(3).textContent = service.availability;
+                //row.insertCell(4).textContent = service.customerID;
+                const dateString = service.orderDate;
+                console.log(dateString);
+                const dateObject = new Date(dateString);
+                console.log(dateObject); 
+                const options = { weekday: 'long', year: '2-digit', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+                const formattedDate = dateObject.toLocaleDateString('en-US', options);
+                console.log(formattedDate);
+                
+                //row.insertCell(5).textContent = service.orderDate;
+                //row.insertCell(5).textContent = service.TC;
+
+            const serviceImageCell = row.insertCell(4);
+            const serviceImage = document.createElement("img");
+            serviceImage.src = `${service.photo}`; // Adjust the path based on your setup
+            console.log(service.photo);
+            serviceImage.style.width = "300px"; // Adjust the width as needed
+            serviceImage.style.height = "225px"; // Adjust the height as needed
+            serviceImageCell.appendChild(serviceImage);
+
+
+                const showInfoButtonCell = row.insertCell(5);
+                const showInfoButton = document.createElement('button');
+                showInfoButton.textContent = 'Show Info';
+                showInfoButton.addEventListener('click', () => showServiceDetails(service));
+                showInfoButtonCell.appendChild(showInfoButton);
+            });
+        }
+
+        function showServiceDetails(service) {
+            const serviceDetails = document.getElementById('serviceDetails');
+            serviceDetails.innerHTML = `
+                <p><strong>Service ID:</strong> ${service.serviceID}</p>
+                <p><strong>Description:</strong> ${service.description}</p>
+                <p><strong>Price:</strong> ${service.price}</p>
+                <p><strong>Availability:</strong> ${service.availability}</p>
+                <p><strong>Customer ID:</strong> ${service.customerID}</p>
+                <p><strong>Order Date:</strong> ${service.orderDate}</p>
+                <p><strong>Photo:</strong></p>
+                <img src="${service.photo}" style="width: 300px; height: 225px; object-fit: cover;" alt="Service Photo">
+            `;
+            serviceDetailsModal.style.display = 'block';
+        }
+
+        function openSearchMenu() {
+            searchMenu.style.display = 'block';
+        }
+
+        function closeModal() {
+            searchMenu.style.display = 'none';
+            serviceDetailsModal.style.display = 'none';
+            addServiceFormModal.style.display = 'none';
+        }
+
+         async function searchServices() {
+            // Implement the search logic based on the chosen attribute and value
+            // For simplicity, just logging the search values for now
+            const searchAttribute = document.getElementById('searchAttribute').value;
+            const searchValue = document.getElementById('searchValue').value;
+            console.log(`Search attribute: ${searchAttribute}, Search value: ${searchValue}`);
+            try {
+                //const response = await fetch(`/api/search/service?attribute=${searchAttribute}&value=${searchValue}`);
+                fetch(`/api/search/service?searchAttribute=${searchAttribute}&searchValue=${searchValue}`)
+    .then(response => response.json())
+    .then(data => {
+        // Handle the search result data
+        console.log(data);
+    })
+    .catch(error => console.error('Error searching services:', error));
+                const searchResults = await response.json();
+                populateServicesTable(searchResults);
+            } catch (error) {
+                console.error('Error searching services:', error);
+            }
+
+            // You can implement the actual search logic here
+
+            closeModal(); // Close the search menu
+        }
+
+        function openAddServiceForm() {
+            addServiceFormModal.style.display = 'block';
+        }
+        /*
+
+        function addService(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const addServiceForm = document.getElementById('addServiceForm');
+            const formData = new FormData(addServiceForm);
+            const newService = {};
+            formData.forEach((value, key) => {
+                newService[key] = value;
+            });
+
+            // For simplicity, using a static customerID and orderDate
+            newService.customerID = 103; // Replace with actual logic to get customer ID
+            newService.orderDate = new Date().toISOString().split('T')[0]; // Current date
+
+            // For simplicity, pushing the new service to the mock data
+            const servicesData = [
+                ...servicesTableBody.children,
+                newService
+            ];
+
+            populateServicesTable(servicesData);
+
+            closeModal(); // Close the add service form modal
+        }
+        */
+
+        async function addService(event) {
+            event.preventDefault(); // Prevent the default form submission
+        
+            const addServiceForm = document.getElementById('addServiceForm');
+            const formData = new FormData(addServiceForm);
+            const newService = {};
+            formData.forEach((value, key) => {
+                newService[key] = value;
+            });
+        
+            // For simplicity, using a static customerID and orderDate
+            //newService.customerID = 103; // Replace with actual logic to get customer ID
+            //newService.orderDate = new Date().toISOString().split('T')[0]; // Current date
+        
+            try {
+                const response = await fetch('/api/services/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newService),
+                });
+                console.log(newService);
+        
+                if (response.ok) {
+                    //const updatedServices = await response.json();
+                    //populateServicesTable(updatedServices);
+                    //closeModal(); // Close the add service form modal
+                    fetchServices();
+                } else {
+                    console.error('Failed to add service:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error adding service:', error);
+            }
+        }
+    </script>
+</body>
+</html>
